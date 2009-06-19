@@ -1,4 +1,3 @@
-#include <string>
 struct Get {
 	Get(
 		const std::string& key_,
@@ -14,11 +13,16 @@ struct Get {
 };
 
 struct Set {
-	Set(const std::string& key_, const std::string& value_) :
-		key(key_), value(value_) { }
+	Set(
+		const std::string& key_,
+		const std::string& value_
+		) :
+		key(key_),
+		value(value_)
+	{ }
 
 	std::string key;
 	std::string value;
-};
 
+};
 

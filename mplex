@@ -20,7 +20,7 @@
 class Mplex
 	def initialize(src, fname = "(mplex)")
 		@script = self.class.compile(src)
-		b = nil; Module.new { b = binding }
+		b = nil; Object.new.instance_eval { b = binding }
 		@proc   = eval("Proc.new{#{@script}}", b, fname)
 	end
 	attr_reader :script
@@ -110,7 +110,7 @@ else
 	input_file = "(stdin)"
 end
 
-b = nil; Module.new { b = binding }
+b = nil; Object.instance_eval { b = binding }
 if ctx_file == "-"
 	ctx = eval($stdin.read, b, "(stdin)")
 elsif ctx_file

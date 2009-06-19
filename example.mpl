@@ -22,4 +22,3 @@ struct [%msg.name%] {
 
 %end
 %# vim: syntax=mplex
-
