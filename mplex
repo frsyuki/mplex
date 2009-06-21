@@ -37,7 +37,6 @@ op.on("-x",         "print ruby script")   {|v| script = true }
 (class<<self;self;end).module_eval {
 	define_method(:usage) {
 		puts op.to_s
-		p $!.backtrace
 		puts $! unless $!.to_s.empty?
 		exit 1
 	}
@@ -68,8 +67,8 @@ libs.each {|lib| require lib }
 
 inputs = finputs.map {|f| [fread(f), fname(f)] }
 
+result = ""
 if script
-	result = ""
 	inputs.each {|src, name|
 		result.concat Mplex.script(src)
 	}
@@ -81,11 +80,14 @@ else
 	end
 	ctx ||= Object.new
 
-	last_src, last_name = inputs.pop
 	inputs.each {|src, name|
-		Mplex.result(src, ctx, name)
+		Mplex.result(src, ctx, name, result)
 	}
-	result = Mplex.result(last_src, ctx, last_name)
+	#last_src, last_name = inputs.pop
+	#inputs.each {|src, name|
+	#	Mplex.result(src, ctx, name)
+	#}
+	#result = Mplex.result(last_src, ctx, last_name)
 end
 
 if foutput == "-"
