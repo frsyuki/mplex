@@ -83,11 +83,6 @@ else
 	inputs.each {|src, name|
 		Mplex.result(src, ctx, name, result)
 	}
-	#last_src, last_name = inputs.pop
-	#inputs.each {|src, name|
-	#	Mplex.result(src, ctx, name)
-	#}
-	#result = Mplex.result(last_src, ctx, last_name)
 end
 
 if foutput == "-"

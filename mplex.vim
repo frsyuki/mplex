@@ -18,12 +18,12 @@ syn cluster mplRegions contains=mplLine,mplBlock,mplExpression,mplComment
 
 syn region mplHeader matchgroup=mplDelimiter start="^__BEGIN__$" end="^__END__$" contains=@rubyTop containedin=ALLBUT,@mplRegions
 
-syn region mplLine        matchgroup=mplDelimiter start="^[\ \t]*%"  end="$"   contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
+syn region mplLine        matchgroup=mplDelimiter start="^[ \t]*%"   end="$"   contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
 syn region mplQualifier   matchgroup=mplDelimiter start="%>"         end="$"   contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
 syn region mplBlock       matchgroup=mplDelimiter start="\[%"        end="%\]" contains=@rubyTop containedin=ALLBUT,@mplRegions
 syn region mplExpression  matchgroup=mplDelimiter start="\[%:"       end="%\]" contains=@rubyTop containedin=ALLBUT,@mplRegions
-syn region mplLineProc    matchgroup=mplDelimiter start="%|[a-z0-9\,]*|"         end="$"   contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
-"syn region mplLineComment matchgroup=mplDelimiter start="^[\ \t]*%#" end="$"   contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
+syn region mplLineProc    matchgroup=mplDelimiter start="%|[a-z0-9,&*()]*|" end="$" contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
+"syn region mplLineComment matchgroup=mplDelimiter start="^[ \t]*%#"  end="$"   contains=@rubyTop containedin=ALLBUT,@mplRegions keepend oneline
 "syn region mplComment     matchgroup=mplDelimiter start="\[%#"       end="%\]" contains=@rubyTop containedin=ALLBUT,@mplRegions
 
 hi def link mplDelimiter    Delimiter

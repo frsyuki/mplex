@@ -64,7 +64,7 @@ class Mplex
 			c, l = t.split(/^[ \t]*%/,2)
 			(o << l; next) if l
 
-			c, a, b = t.split(/[ \t]*\%\|([a-z0-9\,]*)\|/,2)
+			c, a, b = t.split(/[ \t]*\%\|([a-z0-9\,\*\&\(\)]*)\|/,2)
 			t = "[%:#{b.strip} do |#{a}|%]#{c+"\n"}[%:end%]" if b
 
 			c, q = t.split(/[ \t]*\%\>/,2)
