@@ -44,12 +44,9 @@ class Mplex
 	private
 	def self.with_context(context, output, &block)
 		context ||= Object.new
-		save = context.instance_variable_get(:@_mplexout)
 		context.instance_variable_set(:@_mplexout, output)
 		block.call(context)
-		output = context.instance_variable_get(:@_mplexout)
-		context.instance_variable_set(:@_mplexout, save)
-		output
+		context.instance_eval { remove_instance_variable(:@_mplexout) }
 	end
 
 	def self.compile(src)
@@ -72,7 +69,7 @@ class Mplex
 
 			t.split(/\[\%(\:?.*?)\%\]/m).each_with_index {|m,i|
 				(o << "#{m[1..-1]};"; next) if m[0] == ?: && i % 2 == 1
-				(o << "@_mplexout.concat #{m}.to_s;"; next) if i % 2 == 1
+				(o << "@_mplexout.concat((#{m}).to_s);"; next) if i % 2 == 1
 				o << "@_mplexout.concat #{m.dump};" unless m.empty?
 			}
 			o << "\n"
