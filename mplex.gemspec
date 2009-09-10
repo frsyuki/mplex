@@ -1,7 +1,4 @@
 Gem::Specification.new do |s|
-	unless system("./preprocess.sh")
-		raise "preprocess failed"
-	end
   s.name = "mplex"
   s.version = "0.0.2"
   s.summary = "mplex"
