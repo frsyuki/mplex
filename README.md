@@ -18,99 +18,86 @@ Use ./configure or rubygems.
 
 Install using ./configure:
     ./bootstrap
-	./configure
-	make
-	make install
+    ./configure
+    make
+    make install
 
 Install using rubygems:
     gem build mplex.gemspec
     gem install mplex-*.gem
 
 
-*Example
+## Usage
 
-  1. Create template file example.mpl:
+    Usage: mplex [options] input...
+        -c file                          context ruby script
+        -o file                          output file
+        -r library                       load library
+        -x                               print ruby script
 
-    __BEGIN__
-    def delim(i, c, between = ",")
-        between if c.length != i+1
-    end
-    __END__
-    %self.each do |msg|
-    struct [%msg.name%] {
-        %# constructor
-        %unless msg.member.empty?
-        [%msg.name%](
-            const [%m.type%]& [%m.name%]_[%delim(i, msg.member)%]  %|m,i| msg.member.each_with_index
-            ) :
-            [%m.name%]([%m.name%]_)[%delim(i, msg.member)%]  %|m,i| msg.member.each_with_index
-        { }
+
+## Example
+
+### Simple
+    %0.upto(4) do |num|
+    class Test[%num%] {
+    public:
+        %num.times do |i|
+        int member[%i%];
         %end
-
-        %# members
-        [%m.type%] [%m.name%];  %|m| msg.member.each
-
-        static const int id = [%msg.id%];  %>if msg.id
+    
+        %if num % 2 == 0
+        int even;
+        %end
     };
-
     %end
-    %# vim: syntax=mplex
 
+### Simple with advanced syntax
 
-  2. Create context script example.rb:
+    %0.upto(4) do |num|
+    class Test[%num%] {
+    public:
+        int member[%i%];  %|i| num.times
+        int even;  %> if num % 2 == 0
+    };
+    %end
 
-    data = <<DATA
-    Get:
-      - [std::string, key]
-      - [int, flags]
-    Set:
-      - [std::string, key]
-      - [std::string, value]
-    DATA
+### Macro
 
-    require 'yaml'
+    %def abc(ns)
+    namespace [%ns%] {
+      % %w[A B C].each do |a|
+      % yield a
+      % end
+    }
+    %end
+    
+    %abc("name") do |a|
+    void func[%a%]();
+    %end
 
-    msg = Struct.new("Message", :name, :member, :id)
-    mem = Struct.new("Member",  :type, :name)
+### Context script
 
-    YAML.load(data).map {|name, member|
-        msg.new(name, member.map {|t,v| mem.new(t,v) })
+rpc.rb:
+    {
+        "Get" => {
+            "std::string"  => "key",
+            "uint32_t"     => "flags",
+        },
+    
+        "Put" => {
+            "std::string" => "key",
+            "std::string" => "value",
+        },
     }
 
+rpc.hmpl:
+    %self.each_pair do |name, args|
+    void [%name%]( [%args.map {|type,name| "#{type} #{name}" }.join(", ")%] );
+    %end
 
-  3. Run mplex with context data
-
-    ./mplex -c example.rb example.mpl -o example.h
-
-    Output will be as following:
-
-    struct Get {
-        Get(
-            const std::string& key_,
-            const int& flags_
-            ) :
-            key(key_),
-            flags(flags_)
-        { }
-
-        std::string key;
-        int flags;
-
-    };
-
-    struct Set {
-        Set(
-            const std::string& key_,
-            const std::string& value_
-            ) :
-            key(key_),
-            value(value_)
-        { }
-
-        std::string key;
-        std::string value;
-
-    };
+run:
+    mplex -c rpc.rb rpc.hmpl -o rpc.h
 
 
 ## License
