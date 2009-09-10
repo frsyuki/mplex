@@ -1,0 +1,11 @@
+AC_INIT(lib/mplex.rb)
+AC_CONFIG_AUX_DIR(ac)
+AM_INIT_AUTOMAKE(mplex, 0.0.2)
+AC_CONFIG_HEADER(config.h)
+
+AC_CHECK_PROG(RUBY, ruby, ruby)
+if test "x$RUBY" = x; then
+	AC_MSG_ERROR([cannot find ruby. Ruby is required.])
+fi
+
+AC_OUTPUT([Makefile])
