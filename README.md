@@ -99,6 +99,37 @@ rpc.hmpl:
 run:
     mplex -c rpc.rb rpc.hmpl -o rpc.h
 
+### Makefile
+
+source tree:
+    README
+    src/
+	src/subdir/
+    src/Makefile.am
+    src/mplex          # put mplex script here
+    src/myapp.hmpl     # myapp.hmpl  -> myapp.h
+    src/myapp.ccmpl    # myapp.ccmpl -> myapp.cc
+
+Makefile.am:
+    MPLEX = ruby $(abs_srcdir)/mplex
+    export MPLEX
+    
+    PREP_SOURCE = myapp.hmpl myapp.ccmpl
+    PREP_TARGET = $(PREP_SOURCE:mpl=)
+    EXTRA_DIST = $(PREP_SOURCE)
+    
+    %.h: %.hmpl
+    	$(MPLEX) $< -o $@
+    
+    %.cc: %.ccmpl
+    	$(MPLEX) $< -o $@
+    
+    prep: $(PREP_TARGET)
+    	cd subdir && $(MAKE) prep
+    
+    prepc:
+    	rm -f $(PREP_TARGET)
+    	cd subdir && $(MAKE) prepc
 
 ## License
 
