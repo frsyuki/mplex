@@ -43,7 +43,7 @@ Install using rubygems:
     class Test[%num%] {
     public:
         %num.times do |i|
-        int member[%i%];
+        int member{{i}};
         %end
     
         %if num % 2 == 0
@@ -52,12 +52,14 @@ Install using rubygems:
     };
     %end
 
+"{{...}}" is same as "[%...%]".
+
 ### Simple with advanced syntax
 
     %0.upto(4) do |num|
     class Test[%num%] {
     public:
-        int member[%i%];  %|i| num.times
+        int member{{i}};  %|i| num.times
         int even;  %> if num % 2 == 0
     };
     %end
@@ -102,7 +104,7 @@ run:
 
 ## License
 
-    Copyright (c) 2009 FURUHASHI Sadayuki
+    Copyright (c) 2009-2010 FURUHASHI Sadayuki
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

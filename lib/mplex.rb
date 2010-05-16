@@ -1,7 +1,7 @@
 #
 # Mplex: Extended Metaprogramming Library
 #
-# Copyright (c) 2009 FURUHASHI Sadayuki
+# Copyright (c) 2009-2010 FURUHASHI Sadayuki
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,16 @@ class Mplex
 		}
 	end
 
+	def self.file(fname, context = nil)
+		self.result(File.read(fname), context, fname)
+	end
+
+	def self.write(fname, outfname, context = nil)
+		out = self.result(File.read(fname), context, fname)
+		File.open(outfname, "w") {|f| f.write(out) }
+		out
+	end
+
 	def self.script(src)
 		compile(src)
 	end
@@ -72,7 +82,8 @@ class Mplex
 			c, q = t.split(/[ \t]*\%\>/,2)
 			t = "[%:(%]#{c+"\n"}[%:)#{q.strip}%]" if q
 
-			t.split(/\[\%(\:?.*?)\%\]/m).each_with_index {|m,i|
+			s = t.split(/(?:\[\%(\:?.*?)\%\]|\{\{(\:?.*?\}*)\}\})/m)
+			s.each_with_index {|m,i|
 				(o << "#{m[1..-1]};"; next) if m[0] == ?: && i % 2 == 1
 				(o << "@_mplexout.concat((#{m}).to_s);"; next) if i % 2 == 1
 				o << "@_mplexout.concat(#{m.dump});" unless m.empty?
