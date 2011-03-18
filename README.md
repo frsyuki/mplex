@@ -9,7 +9,7 @@ mplex is an Extended Metaprogramming Library.
 
 ## Requirements
 
-  - ruby >= 1.8
+  - ruby &gt;= 1.8
 
 
 ## Installation
@@ -135,7 +135,7 @@ Makefile.am:
 
 ## License
 
-    Copyright (c) 2009-2010 FURUHASHI Sadayuki
+    Copyright (c) 2009-2011 FURUHASHI Sadayuki
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
